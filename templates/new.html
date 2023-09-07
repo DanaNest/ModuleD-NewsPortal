@@ -1,0 +1,18 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load news_filters %}
+
+{% block title %}
+Новость
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим саму новость, идентификатор которой был передан в url -->
+{% block content %}
+<br><br>
+<h2>{{ post.title|censor }}</h2>
+<p>Автор: {{ post.author.nickname}} | Опубликовано {{ post.data_creation|date:'d.m.Y' }}</p>
+<hr>
+<p align = "justify">{{ post.text|censor }}</p>
+
+{% endblock content %}
