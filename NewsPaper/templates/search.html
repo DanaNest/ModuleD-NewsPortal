@@ -1,0 +1,31 @@
+{% extends 'flatpages/default.html' %}
+{% load news_filters %}
+{% block title %}Новости{% endblock title %}
+{% block content %}
+<h1>Поиск по новостям</h1>
+<hr>
+<form class="form-label" method="GET">
+  {{ filter.form }}
+  <input class="btn btn-primary btn-lg" type="submit" value="Найти">
+</form>
+<table style="border: 2px solid white">
+    <tr>
+           <td style="border: 1px solid maroon">Автор / Дата</td>
+           <td style="border: 1px solid maroon">Заголовок</td>
+           <td style="border: 1px solid maroon">Описание</td>
+    </tr>
+    {% for post in filter.qs %}
+
+    <tr>
+        <td style="border: 1px solid maroon; padding: 10px">{{ post.author.nickname.username }} <br /> {{ post.data_creation|date:'d.m.Y' }}</td>
+        <td style="border: 1px solid maroon; padding: 10px">{{ post.title|censor }}</td>
+        <td style="border: 1px solid maroon; text-align: left; padding: 10px">{{ post.text|censor|truncatechars:100}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+
+<!--Добавляем пагинацию-->
+{% include 'paginator.html' %}
+
+{% endblock content %}
