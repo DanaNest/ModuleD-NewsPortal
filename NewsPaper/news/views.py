@@ -25,7 +25,7 @@ class PostDetail(DetailView):
 class Search(ListView):
     model = Post
     template_name = 'search.html'
-    queryset = Post.objects.order_by('-data_creation')  #сортировка по  убыванию
+    queryset = Post.objects.order_by('-data_creation')  # сортировка по  убыванию
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
