@@ -20,11 +20,11 @@ from .views import (
 
 urlpatterns = [
     path('', PostList.as_view(), name='news'),
-    path('<int:pk>/', PostDetail.as_view(), name='post'),
+    path('news/<int:pk>/', PostDetail.as_view(), name='post'),
     path('search/', Search.as_view(), name='search'),
     path('create/', NewsCreate.as_view(), name='create'),
-    path('<int:pk>/edit/', NewsEdit.as_view(), name='post_edit'),
-    path('<int:pk>/delete/', NewsDelete.as_view(), name='post_delete'),
+    path('news/<int:pk>/edit/', NewsEdit.as_view(), name='post_edit'),
+    path('news/<int:pk>/delete/', NewsDelete.as_view(), name='post_delete'),
     path('article/create/', ArticleCreate.as_view(), name='article_create'),
     path('article/<int:pk>/edit/', ArticleEdit.as_view(), name='article_edit'),
     path('article/<int:pk>/delete/', ArticleDelete.as_view(), name='article_delete'),

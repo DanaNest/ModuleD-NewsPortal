@@ -20,12 +20,23 @@
                <td style="border: 1px solid maroon">Заголовок</td>
                <td style="border: 1px solid maroon">Дата</td>
                <td style="border: 1px solid maroon">Описание</td>
+                {% if perms.news.change_post or perms.news.delete_post %}
+               <td style="border: 1px solid maroon">Детали</td>
+                {% endif %}
            </tr>
            {% for post in posts %}
            <tr>
-               <td style="border: 1px solid maroon; padding: 10px">{{ post.title|censor }}</td>
+               <td style="border: 1px solid maroon; padding: 10px"><a href="{% url 'post' post.id %}">{{ post.title|censor }}</a></td>
                <td style="border: 1px solid maroon; padding: 10px">{{ post.data_creation|date:'d.m.Y' }}</td>
                <td style="border: 1px solid maroon; text-align: left; padding: 10px">{{ post.text|truncatewords:20|censor }}</td>
+           <td>
+               {% if perms.news.change_post %}
+                    <a href="{% url 'post_edit' post.id %}">Изменить | </a>
+               {% endif %}
+               {% if perms.news.delete_post %}
+                    <a href="{% url 'post_delete' post.id %}">Удалить </a>
+               {% endif %}
+           </td>
            </tr>
            {% endfor %}
        </table>

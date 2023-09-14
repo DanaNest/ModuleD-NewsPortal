@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -33,7 +33,8 @@ class Search(ListView):
         return context
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     model = Post
     form_class = PostForm
     template_name = 'post_edit.html'
@@ -44,7 +45,8 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
@@ -55,27 +57,32 @@ class ArticleCreate(CreateView):
         return super().form_valid(form)
 
 
-class NewsEdit(UpdateView):
+class NewsEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     model = Post
     form_class = PostForm
     template_name = 'post_edit.html'
+    success_url = reverse_lazy('news')
 
 
-class ArticleEdit(UpdateView):
-    permission_required = ('News.change_post',)
+class ArticleEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    success_url = reverse_lazy('news')
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news')
 
 
-class ArticleDelete(DeleteView):
+class ArticleDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('news')
 
