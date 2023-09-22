@@ -26,13 +26,13 @@ class Author(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
-        return self.title.title()
+        return self.title
 
 
 class Post(models.Model):
-
     NEWS = 'NW'
     ARTICLE = 'AR'
     CATEGORY_CHOICES = [
@@ -42,7 +42,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     category_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
     data_creation = models.DateTimeField(auto_now_add=True)
-    post_category = models.ManyToManyField(Category, through='PostCategory')
+    category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
@@ -51,7 +51,7 @@ class Post(models.Model):
         return f'{self.title.title()}: {self.text[:20]}...'
 
     def get_absolute_url(self):
-        return reverse('news', args=[str(self.id)])
+        return reverse('post', args=[str(self.id)])
 
     def like(self):
         self.rating += 1
@@ -68,6 +68,14 @@ class Post(models.Model):
 class PostCategory(models.Model):
     post_through = models.ForeignKey(Post, on_delete=models.CASCADE)
     category_through = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+
+class Subscriber(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscriptions')
+
+    def __str__(self):
+        return str(self.user)
 
 
 class Comment(models.Model):

@@ -21,7 +21,7 @@ class PostFilter(django_filters.FilterSet):
 
     )
     category = django_filters.ModelChoiceFilter(
-        field_name='post_category',
+        field_name='category',
         label='Категория',
         queryset=Category.objects.all(),
         empty_label='Любая'

@@ -4,19 +4,9 @@ from .views import (
     Search,
     NewsCreate,
     NewsEdit,
-    NewsDelete, ArticleCreate, ArticleEdit, ArticleDelete,
+    NewsDelete, ArticleCreate, ArticleEdit, ArticleDelete, CategoryListView, subscribe, subscriptions
 )
 
-
-# urlpatterns = [
-#     path('news/', views.PostList.as_view(), name='news_list'),
-#     path('news/<int:pk>', views.PostDetail.as_view(), name='news_detail'),
-#     path('news/create/', views.NewsCreate.as_view(), name='news_create'),
-#
-#     path('article/', views.ArticleList.as_view(), name='article_list'),
-#     path('article/<int:pk>', views.ArticleDetail.as_view(), name='article_detail'),
-#     path('article/create/', views.ArticleCreate.as_view(), name='article_create'),
-# ]
 
 urlpatterns = [
     path('', PostList.as_view(), name='news'),
@@ -28,5 +18,7 @@ urlpatterns = [
     path('article/create/', ArticleCreate.as_view(), name='article_create'),
     path('article/<int:pk>/edit/', ArticleEdit.as_view(), name='article_edit'),
     path('article/<int:pk>/delete/', ArticleDelete.as_view(), name='article_delete'),
-
+    path('subscriptions/', subscriptions, name='subscriptions'),
+    path('categories/<int:pk>', CategoryListView.as_view(), name='category_list'),
+    path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
 ]

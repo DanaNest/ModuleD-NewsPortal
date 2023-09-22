@@ -11,10 +11,14 @@
 
 {% block content %}
 <h1>Все новости</h1>
-<h3>Всего новостей - {{ page_obj.paginator.count }}</h3>
-<hr>
+    {% if is_not_subscriber %}
+        <p><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
+    {% endif %}
+
+
+
+    <hr>
    <!-- Выводим товары, только если они есть с помощью тега if -->
-   {% if posts %}
 <table style="border: 2px solid white">
            <tr>
                <td style="border: 1px solid maroon">Заголовок</td>
@@ -25,13 +29,12 @@
                <td style="border: 1px solid maroon">Детали</td>
                 {% endif %}
            </tr>
-           {% for post in posts %}
+           {% for post in category_news_list %}
            <tr>
                <td style="border: 1px solid maroon; padding: 10px"><a href="{% url 'post' post.id %}">{{ post.title|censor }}</a></td>
                <td style="border: 1px solid maroon; padding: 10px">{{ post.data_creation|date:'d.m.Y' }}</td>
                <td style="border: 1px solid maroon; text-align: left; padding: 10px">{{ post.text|truncatewords:20|censor }}</td>
                <td style="border: 1px solid maroon; text-align: left; padding: 10px">
-
                    {% for category in post.category.all %}
                        <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                    {% endfor %}
@@ -48,10 +51,7 @@
            </tr>
            {% endfor %}
        </table>
-   {% else %}
-       <!-- Если новостей нет, говорим, что их нет ;) -->
-       <h2>Новостей нет!</h2>
-   {% endif %}
+
 <!--Добавляем пагинацию-->
 {% include 'paginator.html' %}
 {% endblock content %}

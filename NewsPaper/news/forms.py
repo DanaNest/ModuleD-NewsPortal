@@ -15,13 +15,13 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-            'post_category',
+            'category',
             'author',
             'title',
             'text',
         ]
         labels = {
-            'post_category': 'Category',
+            'category': 'Category',
         }
 
     def clean(self):
