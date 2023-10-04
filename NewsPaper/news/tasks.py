@@ -8,8 +8,6 @@ from django.template.loader import render_to_string
 
 @shared_task
 def task_about_new_post(preview, pk, title, subscribers):
-    print('Я задача!!!!!!!!')
-
     html_content = render_to_string(
         'post_created_email.html',
         {
@@ -21,28 +19,6 @@ def task_about_new_post(preview, pk, title, subscribers):
     msg = EmailMultiAlternatives(subject=title, body='', from_email=settings.DEFAULT_FROM_EMAIL, to=subscribers)
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-
-
-
-# @shared_task
-# def send_email(pk, to_email):
-#     preview = Post.objects.get(pk=pk).preview
-#     title = Post.objects.get(pk=pk).title
-#     html_content = render_to_string(
-#         'email/post_created_email.html',
-#         {
-#             'text': preview,
-#             'link': f'{settings.SITE_URL}/news/{pk}',
-#         }
-#     )
-#     msg = EmailMultiAlternatives(
-#         subject=title,
-#         body='',
-#         from_email=settings.DEFAULT_FROM_EMAIL,
-#         to=to_email,
-#     )
-#     msg.attach_alternative(html_content, 'text/html')
-#     msg.send()
 
 
 @shared_task
@@ -68,16 +44,3 @@ def weekly_send_emails():
     )
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-
-# @shared_task
-# def send_notification(preview, pk, title, subscribers):  # отдельно делаем функцию отправки сообщения о новом посте для подписчика
-#     html_content = render_to_string(
-#         'post_created_email.html',
-#         {
-#             'text': preview,
-#             'link': f'{settings.SITE_URL}/post/{pk}' #   http://127.0.0.1:8000/post/pk
-#         }
-#     )
-#     msg = EmailMultiAlternatives(subject=title, body='', from_email=settings.DEFAULT_FROM_EMAIL, to=subscribers)
-#     msg.attach_alternative(html_content, "text/html")
-#     msg.send()

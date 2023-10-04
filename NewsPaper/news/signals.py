@@ -7,7 +7,6 @@ from news.tasks import task_about_new_post
 
 @receiver(m2m_changed, sender=PostCategory)
 def notify_new_post(sender, instance, **kwargs):
-    print('Я задача!!!!!!!!')
     if kwargs['action'] == 'post_add':
         categories = instance.category.all()
         subscribers_emails = []
@@ -18,17 +17,12 @@ def notify_new_post(sender, instance, **kwargs):
         task_about_new_post.delay(instance.preview(), instance.pk, instance.title, subscribers_emails)
 
 
-# @receiver(m2m_changed, sender=PostCategory)
-# def task_about_new_post(sender, instance, **kwargs):
-#     if kwargs['action'] == 'post_add':
-#         categories = instance.category.all()
-#         subscribers_emails = []
-#
-#         for cat in categories:
-#             subscribers = Subscriber.objects.filter(category=cat)
-#             subscribers_emails += [s.user.email for s in subscribers]
-#
-#         send_email.delay(instance.preview(), instance.pk, instance.title, subscribers_emails)
+
+
+
+
+
+
 
 
 
