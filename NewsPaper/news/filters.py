@@ -30,4 +30,3 @@ class PostFilter(django_filters.FilterSet):
     class Meta:
         model = Post
         fields = ['data_creation', 'title', 'category']
-

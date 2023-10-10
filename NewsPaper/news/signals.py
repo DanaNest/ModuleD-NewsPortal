@@ -13,19 +13,8 @@ def notify_new_post(sender, instance, **kwargs):
 
         for cat in categories:
             subscribers = cat.subscribers.all()
-            subscribers_emails += [s.email for s in subscribers]  #список почт подписчиков
+            subscribers_emails += [s.email for s in subscribers]  # список почт подписчиков
         task_about_new_post.delay(instance.preview(), instance.pk, instance.title, subscribers_emails)
-
-
-
-
-
-
-
-
-
-
-
 
 # from django.conf import settings
 # from django.core.mail import EmailMultiAlternatives

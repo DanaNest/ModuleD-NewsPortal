@@ -33,4 +33,3 @@ class PostForm(forms.ModelForm):
             raise ValidationError('Название и текст не должны совпадать')
 
         return cleaned_data
-

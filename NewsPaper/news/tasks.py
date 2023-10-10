@@ -12,7 +12,7 @@ def task_about_new_post(preview, pk, title, subscribers):
         'post_created_email.html',
         {
             'text': preview,
-            'link': f'{settings.SITE_URL}/post/{pk}' #   http://127.0.0.1:8000/post/pk
+            'link': f'{settings.SITE_URL}/post/{pk}'  # http://127.0.0.1:8000/post/pk
         }
     )
 

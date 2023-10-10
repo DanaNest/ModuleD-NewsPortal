@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.models import Group
+from django.core.cache import cache
 from django.db.models import Exists, OuterRef
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
@@ -18,13 +18,20 @@ class PostList(ListView):
     ordering = '-data_creation'
     template_name = 'news.html'
     context_object_name = 'posts'
-    paginate_by = 10    #вывод 10 новостей на странице
+    paginate_by = 10  # вывод 10 новостей на странице
 
 
 class PostDetail(DetailView):
     model = Post
     template_name = 'new.html'
     context_object_name = 'post'
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'news-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'news-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class Search(ListView):
@@ -115,6 +122,15 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     template_name = 'post_edit.html'
 
     def form_valid(self, form):
+        """
+         Сохраняет данные формы и устанавливает значение category_type равным "AR".
+
+         Параметры:
+             form: Объект формы, содержащий данные для сохранения.
+
+         Возвращает:
+             Результат вызова метода form_valid родительского класса.
+         """
         post = form.save(commit=False)
         post.category_type = "AR"
         return super().form_valid(form)
@@ -148,4 +164,3 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news')
-
