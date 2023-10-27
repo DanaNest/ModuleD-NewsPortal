@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import logging
 from pathlib import Path
 import os
 
@@ -105,6 +105,112 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
+
+logger = logging.getLogger(__name__)
+# настройки для логгирования
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'console_formatter',
+            'filters': ['debug_only'],
+        },
+        'general_file': {
+            'class': 'logging.FileHandler',
+            'level': 'INFO',
+            'formatter': 'general_file_formatter',
+            'filename': 'general.log',
+            'filters': ['not_debug'],
+        },
+        'errors_file': {
+            'class': 'logging.FileHandler',
+            'level': 'ERROR',
+            'formatter': 'errors_file_formatter',
+            'filename': 'errors.log',
+            'filters': ['not_debug'],
+        },
+        'security_file': {
+            'class': 'logging.FileHandler',
+            'level': 'INFO',
+            'formatter': 'security_file_formatter',
+            'filename': 'security.log',
+            'filters': ['not_debug'],
+        },
+        'mail_admins': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'level': 'ERROR',
+            'include_html': False,
+            'filters': ['mail_admins_filter'],
+            'formatter': 'mail_admins_formatter',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'general_file', 'errors_file', 'security_file', 'mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['security_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+    'filters': {
+        'debug_only': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'not_debug': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'mail_admins_filter': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: record.levelno >= logging.ERROR and record.name in ['django.request',
+                                                                                           'django.server'],
+        },
+    },
+    'formatters': {
+        'console_formatter': {
+            'format': '%(asctime)s [%(levelname)s] %(message)s',
+        },
+        'general_file_formatter': {
+            'format': '%(asctime)s [%(levelname)s] [%(module)s] %(message)s',
+        },
+        'errors_file_formatter': {
+            'format': '%(asctime)s [%(levelname)s] %(message)s\n%(pathname)s\n%(exc_info)s',
+        },
+        'security_file_formatter': {
+            'format': '%(asctime)s [%(levelname)s] [%(module)s] %(message)s',
+        },
+        'mail_admins_formatter': {
+            'format': '%(asctime)s [%(levelname)s] %(message)s\n%(pathname)s',
+        },
+    },
+}
 
 ROOT_URLCONF = 'NewsPaper.urls'
 
