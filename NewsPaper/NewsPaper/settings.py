@@ -106,7 +106,6 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-
 logger = logging.getLogger(__name__)
 # настройки для логгирования
 LOGGING = {
