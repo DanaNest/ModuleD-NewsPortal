@@ -8,11 +8,9 @@ class PostFilter(django_filters.FilterSet):
     data_creation = django_filters.DateFilter(
         field_name='data_creation',
         label='Позже чем:',
-        input_formats=[
-            '%Y-%m-%d',
-        ],
         lookup_expr='gt',
-        widget=forms.widgets.DateInput(attrs={'type': 'date'})
+        widget=forms.widgets.DateInput(attrs={'type': 'datetime-local'},
+                                       format='%Y-%m-%dT%H:%M',)
     )
     title = django_filters.CharFilter(
         field_name='title',

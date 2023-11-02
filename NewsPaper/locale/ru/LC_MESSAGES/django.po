@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-02 16:43+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\templates\flatpages\default.html:44
+msgid "Admin"
+msgstr "админ"
+
+#: .\templates\flatpages\default.html:46
+msgid "subscriptions"
+msgstr "подписка"
+
+#: .\templates\flatpages\default.html:48
+msgid "logout"
+msgstr "выйти"
+
+#: .\templates\flatpages\default.html:49
+msgid "login"
+msgstr "войти"
+
+#: .\templates\flatpages\default.html:51
+msgid "create news"
+msgstr "создать н"
+
+#: .\templates\flatpages\default.html:54
+msgid "create article"
+msgstr "создать с"
+
+#: .\templates\news.html:13
+msgid "All news"
+msgstr "Все новости"
+
+#: .\templates\news.html:42
+msgid "Изменить"
+msgstr "edit"
+
+#: .\templates\news.html:45
+msgid "Удалить"
+msgstr "delete"
+
+#~ msgid "Новостной портал"
+#~ msgstr "NewsPortal"
+
+#~ msgid "Админ"
+#~ msgstr "Admin"
+
+#~ msgid "Подписка"
+#~ msgstr "Subscribe"
+
+#~ msgid "Выйти"
+#~ msgstr "LogOut"
+
+#~ msgid "Войти"
+#~ msgstr "LogIn"
+
+#~ msgid "Создать новость"
+#~ msgstr "Create news"
+
+#~ msgid "Создать статью"
+#~ msgstr "Create article"

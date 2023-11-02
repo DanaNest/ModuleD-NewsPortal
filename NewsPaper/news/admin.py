@@ -1,4 +1,6 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
+
 from .models import Category, Comment, Author, Post, Subscriber
 
 
@@ -31,16 +33,17 @@ class PostCategoryFilter(admin.SimpleListFilter):
         return queryset
 
 
-# class PostAdmin(admin.ModelAdmin):
-#     list_display = ('author', 'title', 'text', 'post_category_display', 'category_type', 'rating') # определяем, какие поля отображать в админке
-#     list_filter = ('category_type', 'author', 'data_creation', PostCategoryFilter) # определяем фильтры
-#     search_fields = ('title', 'text') # определяем по каким полям искать
-#     actions = [delete_all_news, delete_all_ratings] # определяем действия, которые можно совершить
-#
-#     def post_category_display(self, obj):
-#         return ', '.join([category.title for category in obj.category.all()]) # возвращаем все категории
-#
-#     post_category_display.short_description = 'Category'
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('author', 'title', 'text', 'post_category_display', 'category_type', 'rating') # определяем, какие поля отображать в админке
+    list_filter = ('category_type', 'author', 'data_creation', PostCategoryFilter) # определяем фильтры
+    search_fields = ('title', 'text') # определяем по каким полям искать
+    actions = [delete_all_news, delete_all_ratings] # определяем действия, которые можно совершить
+    model = Post
+
+    def post_category_display(self, obj):
+        return ', '.join([category.title for category in obj.category.all()]) # возвращаем все категории
+
+    post_category_display.short_description = 'Category'
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -62,9 +65,13 @@ class SubscriberAdmin(admin.ModelAdmin):
     search_fields = ('user', 'category')
 
 
+class CategoryAdmin(TranslationAdmin):
+    model = Category
+
+
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Category)
-admin.site.register(Post)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Subscriber, SubscriberAdmin)
 

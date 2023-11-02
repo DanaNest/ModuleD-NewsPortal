@@ -1,8 +1,11 @@
+from django.utils import timezone
+
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Exists, OuterRef
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
@@ -16,9 +19,42 @@ from .forms import PostForm
 class PostList(ListView):
     model = Post
     ordering = '-data_creation'
+    current_time = timezone.now()
     template_name = 'news.html'
     context_object_name = 'posts'
     paginate_by = 10  # вывод 10 новостей на странице
+
+    def get_queryset(self):
+        """
+        Возвращает queryset для представления NewsFilter.
+
+        param self: Экземпляр класса.
+        return: Отфильтрованный queryset на основе параметров request.GET.
+        """
+        queryset = super().get_queryset()
+        self.filterset = PostFilter(self.request.GET, queryset)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        """
+        Получает данные контекста для представления.
+
+        param **kwargs: Дополнительные именованные аргументы для родительского метода.
+        return: Словарь данных контекста.
+        """
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        context['timezones'] = pytz.common_timezones
+        # context['filterset'] = {
+        #     'models': self.filterset,
+        #     'current_time': timezone.localtime(timezone.now()),
+        #     'timezone':  pytz.common_timezones
+        # }
+        return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/news')
 
 
 class PostDetail(DetailView):

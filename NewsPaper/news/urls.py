@@ -10,7 +10,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', cache_page(60 * 5)(PostList.as_view()), name='news'),
+#    path('', cache_page(60 * 5)(PostList.as_view()), name='news'),
+    path('', PostList.as_view(), name='news'),
     path('news/<int:pk>/', PostDetail.as_view(), name='post'),
     path('search/', Search.as_view(), name='search'),
     path('create/', NewsCreate.as_view(), name='create'),
